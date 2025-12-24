@@ -1,0 +1,129 @@
+{
+  "submission": {
+    "repositoryUrl": "https://github.com/PavaniVattikolla/multi-tenant-saas-platform",
+    "description": "Multi-tenant SaaS platform with authentication, tenant isolation, RBAC, projects, tasks, and audit logging",
+    "technologies": {
+      "backend": "Node.js + Express.js",
+      "frontend": "React",
+      "database": "PostgreSQL",
+      "authentication": "JWT",
+      "containerization": "Docker"
+    }
+  },
+  "docker": {
+    "required": true,
+    "startCommand": "docker-compose up -d",
+    "stopCommand": "docker-compose down",
+    "services": {
+      "database": {
+        "name": "database",
+        "image": "postgres:15-alpine",
+        "externalPort": 5432,
+        "internalPort": 5432
+      },
+      "backend": {
+        "name": "backend",
+        "dockerfile": "backend/Dockerfile",
+        "externalPort": 5000,
+        "internalPort": 5000,
+        "healthCheck": "/api/health"
+      },
+      "frontend": {
+        "name": "frontend",
+        "dockerfile": "frontend/Dockerfile",
+        "externalPort": 3000,
+        "internalPort": 3000
+      }
+    }
+  },
+  "testCredentials": {
+    "superAdmin": {
+      "email": "superadmin@system.com",
+      "password": "Admin@123",
+      "fullName": "System Administrator",
+      "role": "super_admin",
+      "tenantId": null
+    },
+    "tenantAdmin": {
+      "email": "admin@demo.com",
+      "password": "Demo@123",
+      "fullName": "Demo Admin",
+      "role": "tenant_admin",
+      "tenantId": "demo-tenant-001"
+    },
+    "tenant": {
+      "id": "demo-tenant-001",
+      "name": "Demo Company",
+      "subdomain": "demo",
+      "status": "active",
+      "subscriptionPlan": "pro",
+      "maxUsers": 25,
+      "maxProjects": 15
+    },
+    "regularUsers": [
+      {
+        "email": "user1@demo.com",
+        "password": "User@123",
+        "fullName": "User One",
+        "role": "user",
+        "tenantId": "demo-tenant-001"
+      },
+      {
+        "email": "user2@demo.com",
+        "password": "User@123",
+        "fullName": "User Two",
+        "role": "user",
+        "tenantId": "demo-tenant-001"
+      }
+    ],
+    "sampleProjects": [
+      {
+        "id": "project-001",
+        "name": "Q4 Product Launch",
+        "tenantId": "demo-tenant-001",
+        "status": "active"
+      },
+      {
+        "id": "project-002",
+        "name": "Infrastructure Upgrade",
+        "tenantId": "demo-tenant-001",
+        "status": "active"
+      }
+    ],
+    "sampleTasks": [
+      {
+        "id": "task-001",
+        "projectId": "project-001",
+        "tenantId": "demo-tenant-001",
+        "title": "Design UI mockups",
+        "status": "in_progress",
+        "priority": "high"
+      },
+      {
+        "id": "task-002",
+        "projectId": "project-001",
+        "tenantId": "demo-tenant-001",
+        "title": "Implement authentication",
+        "status": "todo",
+        "priority": "high"
+      },
+      {
+        "id": "task-003",
+        "projectId": "project-002",
+        "tenantId": "demo-tenant-001",
+        "title": "Database optimization",
+        "status": "completed",
+        "priority": "medium"
+      }
+    ]
+  },
+  "apiEndpoints": {
+    "total": 19,
+    "health": "/api/health",
+    "authentication": ["/api/auth/register-tenant", "/api/auth/login", "/api/auth/me", "/api/auth/logout"],
+    "tenants": ["/api/tenants/:tenantId", "PUT /api/tenants/:tenantId", "GET /api/tenants"],
+    "users": ["POST /api/tenants/:tenantId/users", "GET /api/tenants/:tenantId/users", "PUT /api/users/:userId"],
+    "projects": ["POST /api/tenants/:tenantId/projects", "GET /api/tenants/:tenantId/projects", "GET /api/projects/:projectId", "PUT /api/projects/:projectId", "DELETE /api/projects/:projectId"],
+    "tasks": ["POST /api/projects/:projectId/tasks", "GET /api/projects/:projectId/tasks", "PUT /api/tasks/:taskId", "DELETE /api/tasks/:taskId"]
+  }
+}
