@@ -1,30 +1,32 @@
 {
-  "name": "backend",
+  "name": "multi-tenant-saas-backend",
   "version": "1.0.0",
-  "description": "Multi Tenant SaaS Backend",
+  "description": "Multi-tenant SaaS Platform Backend API",
   "main": "src/server.js",
   "scripts": {
-    "dev": "nodemon src/server.js",
     "start": "node src/server.js",
-    "test": "jest"
+    "dev": "nodemon src/server.js",
+    "migrate": "node scripts/migrate.js",
+    "seed": "psql -U $DB_USER -d $DB_NAME -f database/seeds/seed_data.sql"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
+  "keywords": ["saas", "multi-tenant", "api"],
+  "author": "Pavani Vattikolla",
+  "license": "MIT",
   "dependencies": {
-    "bcryptjs": "^3.0.3",
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
-    "dotenv": "^17.2.3",
-    "express": "^5.2.1",
-    "joi": "^18.0.2",
-    "jsonwebtoken": "^9.0.3",
-    "morgan": "^1.10.1",
-    "pg": "^8.16.3",
-    "uuid": "^13.0.0"
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.1.2",
+    "pg": "^8.10.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "jest": "^29.7.0",
-    "nodemon": "^3.1.11"
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
   }
 }

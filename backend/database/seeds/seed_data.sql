@@ -1,136 +1,59 @@
--- Insert super admin user (tenant_id = NULL)
-INSERT INTO users (id, tenant_id, email, password_hash, full_name, role, is_active)
+-- Seed Super Admin User (bcrypt hash of "Admin@123")
+INSERT INTO users (id, tenant_id, email, password_hash, full_name, role, is_active) 
 VALUES (
-    '550e8400-e29b-41d4-a716-446655440001',
-    NULL,
-    'superadmin@system.com',
-    '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcg7b3XeKeUxWdeS86E36UxeOU82', -- hashed: Admin@123 using bcrypt
-    'Super Admin',
-    'super_admin',
-    true
-);
+  '00000000-0000-0000-0000-000000000001',
+  NULL,
+  'superadmin@system.com',
+  '$2b$10$9EixZaYVK1fsbw1ZfbX3BeXDlH.PKZbv5H8KnzzVgXXbVxmva.pFm',
+  'Super Admin',
+  'super_admin',
+  true
+) ON CONFLICT DO NOTHING;
 
--- Insert demo tenant
+-- Seed Demo Tenant
 INSERT INTO tenants (id, name, subdomain, status, subscription_plan, max_users, max_projects)
 VALUES (
-    '550e8400-e29b-41d4-a716-446655440002',
-    'Demo Company',
-    'demo',
-    'active',
-    'pro',
-    25,
-    15
-);
+  '11111111-1111-1111-1111-111111111111',
+  'Demo Company',
+  'demo',
+  'active',
+  'pro',
+  25,
+  15
+) ON CONFLICT DO NOTHING;
 
--- Insert tenant admin for demo company
+-- Seed Tenant Admin (bcrypt hash of "Demo@123")
 INSERT INTO users (id, tenant_id, email, password_hash, full_name, role, is_active)
 VALUES (
-    '550e8400-e29b-41d4-a716-446655440003',
-    '550e8400-e29b-41d4-a716-446655440002',
-    'admin@demo.com',
-    '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcg7b3XeKeUxWdeS86E36UxeOU82', -- hashed: Demo@123
-    'Demo Admin',
-    'tenant_admin',
-    true
-);
+  '22222222-2222-2222-2222-222222222222',
+  '11111111-1111-1111-1111-111111111111',
+  'admin@demo.com',
+  '$2b$10$6W4UxZPk9VfLIvVLBMcxcOjP8EyO5Z.8aHNiD6JAO5cKqF6.pCTPK',
+  'Admin User',
+  'tenant_admin',
+  true
+) ON CONFLICT DO NOTHING;
 
--- Insert regular users
+-- Seed Regular Users (bcrypt hash of "User@123")
 INSERT INTO users (id, tenant_id, email, password_hash, full_name, role, is_active)
-VALUES 
-(
-    '550e8400-e29b-41d4-a716-446655440004',
-    '550e8400-e29b-41d4-a716-446655440002',
-    'user1@demo.com',
-    '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcg7b3XeKeUxWdeS86E36UxeOU82', -- hashed: User@123
-    'User One',
-    'user',
-    true
-),
-(
-    '550e8400-e29b-41d4-a716-446655440005',
-    '550e8400-e29b-41d4-a716-446655440002',
-    'user2@demo.com',
-    '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcg7b3XeKeUxWdeS86E36UxeOU82', -- hashed: User@123
-    'User Two',
-    'user',
-    true
-);
+VALUES
+  ('33333333-3333-3333-3333-333333333333', '11111111-1111-1111-1111-111111111111', 'user1@demo.com', '$2b$10$6W4UxZPk9VfLIvVLBMcxcOjP8EyO5Z.8aHNiD6JAO5cKqF6.pCTpK', 'User One', 'user', true),
+  ('44444444-4444-4444-4444-444444444444', '11111111-1111-1111-1111-111111111111', 'user2@demo.com', '$2b$10$6W4UxZPk9VfLIvVLBMcxcOjP8EyO5Z.8aHNiD6JAO5cKqF6.pCTpK', 'User Two', 'user', true)
+ON CONFLICT DO NOTHING;
 
--- Insert sample projects
+-- Seed Projects
 INSERT INTO projects (id, tenant_id, name, description, status, created_by)
-VALUES 
-(
-    '550e8400-e29b-41d4-a716-446655440006',
-    '550e8400-e29b-41d4-a716-446655440002',
-    'Website Redesign',
-    'Complete redesign of company website',
-    'active',
-    '550e8400-e29b-41d4-a716-446655440003'
-),
-(
-    '550e8400-e29b-41d4-a716-446655440007',
-    '550e8400-e29b-41d4-a716-446655440002',
-    'Mobile App Development',
-    'Build native mobile application',
-    'active',
-    '550e8400-e29b-41d4-a716-446655440003'
-);
+VALUES
+  ('55555555-5555-5555-5555-555555555555', '11111111-1111-1111-1111-111111111111', 'Project Alpha', 'First demo project', 'active', '22222222-2222-2222-2222-222222222222'),
+  ('66666666-6666-6666-6666-666666666666', '11111111-1111-1111-1111-111111111111', 'Project Beta', 'Second demo project', 'active', '22222222-2222-2222-2222-222222222222')
+ON CONFLICT DO NOTHING;
 
--- Insert sample tasks
-INSERT INTO tasks (id, project_id, tenant_id, title, description, status, priority, assigned_to, due_date)
-VALUES 
-(
-    '550e8400-e29b-41d4-a716-446655440008',
-    '550e8400-e29b-41d4-a716-446655440006',
-    '550e8400-e29b-41d4-a716-446655440002',
-    'Design mockups',
-    'Create high-fidelity design mockups',
-    'completed',
-    'high',
-    '550e8400-e29b-41d4-a716-446655440004',
-    '2025-12-25'
-),
-(
-    '550e8400-e29b-41d4-a716-446655440009',
-    '550e8400-e29b-41d4-a716-446655440006',
-    '550e8400-e29b-41d4-a716-446655440002',
-    'Implement frontend',
-    'Code the frontend using React',
-    'in_progress',
-    'high',
-    '550e8400-e29b-41d4-a716-446655440004',
-    '2025-12-28'
-),
-(
-    '550e8400-e29b-41d4-a716-446655440010',
-    '550e8400-e29b-41d4-a716-446655440006',
-    '550e8400-e29b-41d4-a716-446655440002',
-    'API Development',
-    'Build backend APIs',
-    'todo',
-    'medium',
-    '550e8400-e29b-41d4-a716-446655440005',
-    '2025-12-30'
-),
-(
-    '550e8400-e29b-41d4-a716-446655440011',
-    '550e8400-e29b-41d4-a716-446655440007',
-    '550e8400-e29b-41d4-a716-446655440002',
-    'Setup development environment',
-    'Configure mobile dev tools',
-    'completed',
-    'low',
-    '550e8400-e29b-41d4-a716-446655440005',
-    '2025-12-26'
-),
-(
-    '550e8400-e29b-41d4-a716-446655440012',
-    '550e8400-e29b-41d4-a716-446655440007',
-    '550e8400-e29b-41d4-a716-446655440002',
-    'App UI design',
-    'Design app interface',
-    'todo',
-    'medium',
-    '550e8400-e29b-41d4-a716-446655440004',
-    '2025-01-05'
-);
+-- Seed Tasks
+INSERT INTO tasks (id, project_id, tenant_id, title, description, status, priority, assigned_to)
+VALUES
+  ('77777777-7777-7777-7777-777777777777', '55555555-5555-5555-5555-555555555555', '11111111-1111-1111-1111-111111111111', 'Task 1', 'First task', 'todo', 'high', '33333333-3333-3333-3333-333333333333'),
+  ('88888888-8888-8888-8888-888888888888', '55555555-5555-5555-5555-555555555555', '11111111-1111-1111-1111-111111111111', 'Task 2', 'Second task', 'in_progress', 'medium', '44444444-4444-4444-4444-444444444444'),
+  ('99999999-9999-9999-9999-999999999999', '66666666-6666-6666-6666-666666666666', '11111111-1111-1111-1111-111111111111', 'Task 3', 'Third task', 'todo', 'low', NULL),
+  ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '66666666-6666-6666-6666-666666666666', '11111111-1111-1111-1111-111111111111', 'Task 4', 'Fourth task', 'completed', 'high', '33333333-3333-3333-3333-333333333333'),
+  ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '55555555-5555-5555-5555-555555555555', '11111111-1111-1111-1111-111111111111', 'Task 5', 'Fifth task', 'todo', 'medium', '44444444-4444-4444-4444-444444444444')
+ON CONFLICT DO NOTHING;
