@@ -1,5 +1,13 @@
 # Multi-Tenant SaaS Platform
 
+
+## Badges
+
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Node](https://img.shields.io/badge/node-v16+-green.svg)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue.svg)
+![Docker](https://img.shields.io/badge/docker-ready-brightgreen.svg)
+
 A production-ready multi-tenant SaaS platform with authentication, tenant isolation, role-based access control (RBAC), project management, task tracking, and comprehensive audit logging.
 
 ## Features
