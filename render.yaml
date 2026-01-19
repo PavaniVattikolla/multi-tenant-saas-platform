@@ -1,0 +1,42 @@
+services:
+  - type: web
+    name: multi-tenant-saas-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install && npm run migrate
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: JWT_SECRET
+        value: your-secret-key-change-in-production-min-32-chars
+      - key: JWT_EXPIRY
+        value: 24h
+      - key: DATABASE_URL
+        fromDatabase:
+          name: multi-tenant-db
+          property: connectionString
+      - key: CORS_ORIGIN
+        value: https://multi-tenant-saas-frontend.onrender.com
+
+  - type: static
+    name: multi-tenant-saas-frontend
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    publishPath: build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://multi-tenant-saas-backend.onrender.com/api
+      - key: REACT_APP_ENV
+        value: production
+    routes:
+      - path: /*
+        destination: /index.html
+
+databases:
+  - name: multi-tenant-db
+    databaseName: multi_tenant_saas
+    user: postgres
+    plan: free
