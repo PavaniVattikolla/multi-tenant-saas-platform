@@ -2,6 +2,8 @@
   "submission": {
     "repositoryUrl": "https://github.com/PavaniVattikolla/multi-tenant-saas-platform",
     "description": "Multi-tenant SaaS platform with authentication, tenant isolation, RBAC, projects, tasks, and audit logging",
+      "backendUrl": "https://multi-tenant-saas-backend.onrender.com",
+  "frontendUrl": "https://multi-tenant-saas-frontend.onrender.com",
     "technologies": {
       "backend": "Node.js + Express.js",
       "frontend": "React",
